@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 const FROM_EMAIL     = "SovNum <rapport@sovnum.fr>";
+const NOTIFY_EMAIL   = "tmeneret@pm.me";
 const SUPABASE_URL   = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
@@ -681,6 +682,45 @@ serve(async (req) => {
     }
 
     await sendEmail(template(data as DiagnosticData));
+
+    // Notification admin sur nouveau diagnostic (J+0 uniquement)
+    if (email_type === "j0") {
+      const d = data as DiagnosticData;
+      const pct = Math.round((d.score_total / d.score_max) * 100);
+      const niv: Record<string, string> = { expose: "Exposé", vulnerable: "Vulnérable", resiliant: "Résilient", souverain: "Souverain" };
+      const secteurs: Record<string, string> = { finance: "Finance", sante: "Santé", industrie: "Industrie", public: "Secteur public", defense: "Défense", autre: "Autre" };
+      sendEmail({
+        to: NOTIFY_EMAIL,
+        subject: `Nouveau diagnostic · ${d.prenom} ${d.nom} · ${d.entreprise}`,
+        html: `
+<div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;max-width:500px;margin:0 auto;padding:24px;">
+  <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">Nouveau diagnostic SovNum</div>
+  <h2 style="font-size:20px;color:#1C2B4A;margin:0 0 4px;">${d.prenom} ${d.nom}</h2>
+  <div style="font-size:14px;color:#6B7280;margin-bottom:16px;">${d.poste || "—"} · <strong>${d.entreprise}</strong>${d.siren ? ` (SIREN ${d.siren})` : ""}</div>
+  <table cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+    <tr>
+      <td style="padding:8px 16px 8px 0;font-size:13px;color:#6B7280;">Email</td>
+      <td style="padding:8px 0;font-size:13px;color:#1C2B4A;font-weight:600;"><a href="mailto:${d.email}" style="color:#002395;">${d.email}</a></td>
+    </tr>
+    <tr>
+      <td style="padding:8px 16px 8px 0;font-size:13px;color:#6B7280;">Secteur</td>
+      <td style="padding:8px 0;font-size:13px;color:#1C2B4A;font-weight:600;">${secteurs[d.secteur] ?? d.secteur ?? "—"}</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 16px 8px 0;font-size:13px;color:#6B7280;">Score</td>
+      <td style="padding:8px 0;font-size:13px;color:#1C2B4A;font-weight:600;">${d.score_total}/${d.score_max} (${pct}%)</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 16px 8px 0;font-size:13px;color:#6B7280;">Niveau</td>
+      <td style="padding:8px 0;font-size:13px;font-weight:700;color:${d.niveau_maturite === "souverain" ? "#15803D" : d.niveau_maturite === "resiliant" ? "#B45309" : d.niveau_maturite === "vulnerable" ? "#C2410C" : "#B91C1C"};">${niv[d.niveau_maturite] ?? "Exposé"}</td>
+    </tr>
+  </table>
+  <div style="font-size:12px;color:#9CA3AF;border-top:1px solid #E5E7EB;padding-top:12px;">
+    Juridique ${d.score_juridique}/${d.score_max_juridique} · Opérationnel ${d.score_operationnel}/${d.score_max_operationnel} · Stratégique ${d.score_strategique}/${d.score_max_strategique}
+  </div>
+</div>`,
+      }).catch(e => console.error("Admin notification error:", e));
+    }
 
     // Marquer l'email comme envoyé
     const sentField = `email_${email_type}_sent_at`;
