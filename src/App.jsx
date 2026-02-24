@@ -151,7 +151,7 @@ function HeroForm({ onStart }) {
   });
 
   return (
-    <div style={{
+    <div className="hero-form" style={{
       background: T.blanc,
       border: `1px solid ${T.grisLine}`,
       borderRadius: 12,
@@ -751,7 +751,7 @@ function Landing({onStart}) {
       <Liseret height={5} />
 
       {/* NAV */}
-      <nav style={{
+      <nav className="nav-main" style={{
         padding:"0 48px", height:64,
         display:"flex",alignItems:"center",justifyContent:"space-between",
         borderBottom:`1px solid ${T.grisLine}`,
@@ -760,7 +760,7 @@ function Landing({onStart}) {
       }}>
         <Logo />
         <div style={{ display:"flex", alignItems:"center", gap:16 }}>
-          <div style={{
+          <div className="hide-mobile" style={{
             padding:"4px 12px",
             border:`1px solid ${T.bleu}30`,
             fontSize:11, color:T.bleu,
@@ -779,7 +779,7 @@ function Landing({onStart}) {
 
       {/* HERO — fond blanc, deux colonnes */}
       <div style={{ background: T.blanc, borderBottom: `1px solid ${T.grisLine}` }}>
-        <div style={{
+        <div className="hero-grid" style={{
           maxWidth: 1200, margin: "0 auto",
           padding: "72px 48px 80px",
           display: "grid",
@@ -845,7 +845,7 @@ function Landing({onStart}) {
       </div>
 
       {/* BANDE SOURCES */}
-      <div style={{
+      <div className="source-band" style={{
         background: T.grisbg,
         borderBottom: `1px solid ${T.grisLine}`,
         padding: "16px 48px",
@@ -871,7 +871,7 @@ function Landing({onStart}) {
       </div>
 
       {/* STATS */}
-      <div style={{
+      <div className="stats-grid" style={{
         display:"grid",gridTemplateColumns:"repeat(3,1fr)",
         borderBottom:`1px solid ${T.grisLine}`,
         background:T.grisbg,
@@ -889,7 +889,7 @@ function Landing({onStart}) {
       </div>
 
       {/* 3 PILIERS */}
-      <div style={{padding:"72px 48px",maxWidth:960,margin:"0 auto"}}>
+      <div className="section-pad" style={{padding:"72px 48px",maxWidth:960,margin:"0 auto"}}>
         <div style={{
           fontSize:11,fontWeight:700,letterSpacing:"0.12em",
           color:T.bleu,textTransform:"uppercase",marginBottom:12,
@@ -901,7 +901,7 @@ function Landing({onStart}) {
           Trois dimensions de souveraineté numérique
         </h2>
 
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,background:T.grisLine}}>
+        <div className="grid-3" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,background:T.grisLine}}>
           {[
             {icon:"⚖️",dim:"Juridique",desc:"Vos données sont-elles soumises au CLOUD Act américain ? L'hébergement, le fournisseur cloud et la suite bureautique déterminent la loi applicable."},
             {icon:"⚙️",dim:"Opérationnelle",desc:"Si votre hébergeur disparaît demain, combien de temps avant le retour à la normale ? La résilience, les sauvegardes et le plan de crise comptent."},
@@ -925,13 +925,13 @@ function Landing({onStart}) {
       </div>
 
       {/* SGDSN */}
-      <div style={{
+      <div className="section-pad" style={{
         borderTop:`1px solid ${T.grisLine}`,
         borderBottom:`1px solid ${T.grisLine}`,
         background:T.bleuPale,
         padding:"40px 48px",
       }}>
-        <div style={{maxWidth:860,margin:"0 auto",display:"flex",gap:32,alignItems:"center"}}>
+        <div className="sgdsn-flex" style={{maxWidth:860,margin:"0 auto",display:"flex",gap:32,alignItems:"center"}}>
           <div style={{fontSize:36,flexShrink:0}}>🛡️</div>
           <div>
             <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.1em",color:T.bleu,textTransform:"uppercase",marginBottom:8}}>
@@ -945,7 +945,7 @@ function Landing({onStart}) {
       </div>
 
       {/* CTA BAS */}
-      <div style={{padding:"72px 48px",textAlign:"center"}}>
+      <div className="section-pad" style={{padding:"72px 48px",textAlign:"center"}}>
         <h2 style={{fontSize:28,fontWeight:700,color:T.ardoise,marginBottom:12,letterSpacing:"-0.02em"}}>
           Prêt à évaluer votre exposition ?
         </h2>
@@ -968,7 +968,7 @@ function Landing({onStart}) {
       </div>
 
       {/* Footer landing */}
-      <div style={{borderTop:`1px solid ${T.grisLine}`,padding:"24px 48px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12}}>
+      <div className="section-pad footer-flex" style={{borderTop:`1px solid ${T.grisLine}`,padding:"24px 48px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12}}>
         <div style={{fontSize:10,color:T.grisClair,letterSpacing:"0.06em"}}>
           <span style={{fontWeight:400}}>The Sov</span>{" "}<span style={{fontWeight:700}}>Company</span> · © {new Date().getFullYear()} SovNum
         </div>
@@ -1045,7 +1045,7 @@ function Identification({onComplete, initialData}) {
   return (
     <div style={{minHeight:"100vh",background:T.grisbg,fontFamily:"'Marianne','Helvetica Neue',Helvetica,sans-serif"}}>
       <Liseret height={5}/>
-      <nav style={{
+      <nav className="nav-main" style={{
         padding:"0 48px",height:64,display:"flex",alignItems:"center",
         justifyContent:"space-between",borderBottom:`1px solid ${T.grisLine}`,
         background:T.blanc,
@@ -1069,9 +1069,9 @@ function Identification({onComplete, initialData}) {
           </p>
         </div>
 
-        <div style={{background:T.blanc,border:`1px solid ${T.grisLine}`,padding:"40px"}}>
+        <div className="id-form" style={{background:T.blanc,border:`1px solid ${T.grisLine}`,padding:"40px"}}>
           {/* Prénom / Nom */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:20}}>
+          <div className="grid-2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:20}}>
             {[["prenom","Prénom","Marie"],["nom","Nom","Dupont"]].map(([k,l,ph])=>(
               <div key={k}>
                 <label style={lbl}>{l} *</label>
@@ -1144,7 +1144,7 @@ function Identification({onComplete, initialData}) {
           {/* Secteur */}
           <div style={{marginBottom:36}}>
             <label style={lbl}>Secteur d'activité *</label>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+            <div className="grid-2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
               {SECTOR_LABELS.map(s=>(
                 <div key={s.value} onClick={()=>setF(x=>({...x,secteur:s.value}))} style={{
                   padding:"10px 14px",
@@ -1232,7 +1232,7 @@ function Diagnostic({profile,onComplete}) {
         background:T.blanc,borderBottom:`1px solid ${T.grisLine}`,
         position:"sticky",top:5,zIndex:100,
       }}>
-        <div style={{
+        <div className="nav-main" style={{
           padding:"0 48px",height:56,
           display:"flex",alignItems:"center",justifyContent:"space-between",
         }}>
@@ -1443,7 +1443,7 @@ function Rapport({profile,answers,questions}) {
           nav,button,.no-print{display:none!important;}
           *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
         }
-        @media (max-width:860px){
+        @media (max-width:768px){
           .rg2{grid-template-columns:1fr!important;}
           .rg3{grid-template-columns:1fr!important;}
           .rghero{grid-template-columns:1fr!important;}
@@ -1452,7 +1452,7 @@ function Rapport({profile,answers,questions}) {
       <Liseret height={5}/>
 
       {/* NAV */}
-      <nav style={{padding:"0 48px",height:56,display:"flex",alignItems:"center",justifyContent:"space-between",background:T.blanc,borderBottom:`1px solid ${T.grisLine}`}}>
+      <nav className="nav-main" style={{padding:"0 48px",height:56,display:"flex",alignItems:"center",justifyContent:"space-between",background:T.blanc,borderBottom:`1px solid ${T.grisLine}`}}>
         <Logo/>
         <div style={{fontSize:11,color:T.gris,letterSpacing:"0.06em",fontWeight:500}}>
           RAPPORT CONFIDENTIEL · {new Date().toLocaleDateString("fr-FR",{day:"2-digit",month:"long",year:"numeric"})}
@@ -1462,7 +1462,7 @@ function Rapport({profile,answers,questions}) {
       {/* ══ SECTION 1 : SCORE + ÉCHELLE DE MATURITÉ ══ */}
       <div style={{background:T.blanc,borderBottom:`1px solid ${T.grisLine}`,position:"relative"}}>
         <div style={{position:"absolute",left:0,top:0,bottom:0,width:4,background:T.rouge}}/>
-        <div style={{maxWidth:1060,margin:"0 auto",padding:"40px 52px"}}>
+        <div className="rapport-inner" style={{maxWidth:1060,margin:"0 auto",padding:"40px 52px"}}>
           <div style={{fontSize:12,color:T.gris,letterSpacing:"0.08em",marginBottom:28,fontWeight:500}}>
             {profile.prenom} {profile.nom} · {profile.poste} · {profile.entreprise}
           </div>
@@ -1475,7 +1475,7 @@ function Rapport({profile,answers,questions}) {
                 <span style={{fontSize:13,fontWeight:700,color:mat.fg,letterSpacing:"0.06em"}}>NIVEAU {mat.label.toUpperCase()}</span>
               </div>
               <div style={{display:"flex",alignItems:"baseline",gap:12,marginBottom:16}}>
-                <span style={{fontSize:84,fontWeight:700,color:T.ardoise,lineHeight:1,letterSpacing:"-0.04em"}}>{sc.total}</span>
+                <span className="score-big" style={{fontSize:84,fontWeight:700,color:T.ardoise,lineHeight:1,letterSpacing:"-0.04em"}}>{sc.total}</span>
                 <span style={{color:T.grisClair,fontSize:32,fontWeight:300}}>/ {sc.max}</span>
               </div>
               <div style={{display:"inline-flex",alignItems:"center",gap:14,padding:"10px 18px",background:T.grisbg,border:`1px solid ${T.grisLine}`}}>
@@ -1506,7 +1506,7 @@ function Rapport({profile,answers,questions}) {
                 }}/>
               </div>
               {/* 4 cases de niveau */}
-              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>
+              <div className="mat-scale" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>
                 {matScale.map((l,i)=>(
                   <div key={i} style={{
                     padding:"10px 8px",textAlign:"center",
@@ -1554,7 +1554,7 @@ function Rapport({profile,answers,questions}) {
               </div>
             </div>
             <div style={{display:"flex",alignItems:"baseline",gap:6,marginBottom:10}}>
-              <span style={{fontSize:38,fontWeight:700,color:T.ardoise,letterSpacing:"-0.02em",lineHeight:1}}>{d.val}</span>
+              <span className="score-dim" style={{fontSize:38,fontWeight:700,color:T.ardoise,letterSpacing:"-0.02em",lineHeight:1}}>{d.val}</span>
               <span style={{fontSize:16,color:T.grisClair}}>/{d.max}</span>
               <span style={{fontSize:13,color:d.mat.fg,fontWeight:700,marginLeft:6}}>{d.pct} %</span>
             </div>
@@ -1569,7 +1569,7 @@ function Rapport({profile,answers,questions}) {
       </div>
 
       {/* ══ SECTION 3 : ANALYSE + PLAN ══ */}
-      <div style={{maxWidth:1060,margin:"0 auto",padding:"40px 52px"}}>
+      <div className="rapport-inner" style={{maxWidth:1060,margin:"0 auto",padding:"40px 52px"}}>
         <div className="rg2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
 
           {/* COL GAUCHE */}
@@ -1657,7 +1657,7 @@ function Rapport({profile,answers,questions}) {
         </div>
 
         {/* Footer */}
-        <div style={{marginTop:40,paddingTop:24,borderTop:`1px solid ${T.grisLine}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:16}}>
+        <div className="rapport-footer" style={{marginTop:40,paddingTop:24,borderTop:`1px solid ${T.grisLine}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:16}}>
           <div style={{fontSize:11,color:T.grisClair,lineHeight:1.6,fontStyle:"normal"}}>
             Diagnostic basé sur la Stratégie nationale de cybersécurité SGDSN 2026–2030.<br/>
             Les scores sont indicatifs et ne constituent pas un audit de conformité certifié.
@@ -1783,10 +1783,7 @@ function MentionsLegales() {
 
         <h2 style={S.h2}>2. Hébergement</h2>
         <p style={S.p}>
-          Le site est hébergé par :<br />
-          <strong>Vercel Inc.</strong><br />
-          440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis<br />
-          Site : vercel.com
+          Le site sovnum.fr est hébergé au sein de l'Union européenne. Pour toute question relative à l'hébergement, contactez-nous à <a href="mailto:contact@thesovcie.com" style={{ color: T.bleu }}>contact@thesovcie.com</a>.
         </p>
 
         <h2 style={S.h2}>3. Propriété intellectuelle</h2>
