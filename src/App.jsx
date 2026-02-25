@@ -2,69 +2,50 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { supabase } from "./lib/supabase";
 
 /* ─────────────────────────────────────────────
-   TOKENS — Identité visuelle République française
+   TOKENS — Identité visuelle The Sov Company
    ───────────────────────────────────────────── */
 const T = {
-  bleu:      "#002395",   // Bleu officiel drapeau FR
-  bleuMid:   "#1A3A8F",
-  bleuLight: "#3F5FBD",
-  bleuPale:  "#EEF1FA",
+  bleu:      "#2563EB",   // Primary blue
+  bleuMid:   "#1D4ED8",   // Blue hover
+  bleuLight: "#3B82F6",   // Light blue accent
+  bleuPale:  "#EFF6FF",   // Pale blue background
   blanc:     "#FFFFFF",
-  rouge:     "#ED2939",   // Rouge officiel drapeau FR
-  rougePale: "#FDF0F1",
-  ardoise:   "#1C2B4A",   // Fond sombre institutionnel
-  gris:      "#6B7280",
-  grisClair: "#9CA3AF",
-  grisLine:  "#E5E7EB",
-  grisbg:    "#F8F9FC",
-  encre:     "#0D1B2A",
-  // Niveaux de maturité
-  niveauExpose:     { fg: "#B91C1C", bg: "#FEF2F2", border: "#FCA5A5" },
-  niveauVulnerable: { fg: "#C2410C", bg: "#FFF7ED", border: "#FDBA74" },
-  niveauResiliant:  { fg: "#B45309", bg: "#FFFBEB", border: "#FCD34D" },
-  niveauSouverain:  { fg: "#15803D", bg: "#F0FDF4", border: "#86EFAC" },
+  rouge:     "#EF4444",   // Semantic error/danger
+  rougePale: "#FEF2F2",
+  ardoise:   "#0F172A",   // Dark slate
+  gris:      "#64748B",
+  grisClair: "#94A3B8",
+  grisLine:  "#E2E8F0",
+  grisbg:    "#F8FAFC",
+  encre:     "#020617",
+  // Niveaux de maturité — rouge → orange → vert clair → vert foncé
+  niveauExpose:     { fg: "#DC2626", bg: "#FEF2F2", border: "#FECACA" },
+  niveauVulnerable: { fg: "#EA580C", bg: "#FFF7ED", border: "#FED7AA" },
+  niveauResiliant:  { fg: "#16A34A", bg: "#F0FDF4", border: "#BBF7D0" },
+  niveauSouverain:  { fg: "#166534", bg: "#ECFDF5", border: "#6EE7B7" },
 };
 
 /* ─────────────────────────────────────────────
-   LISERET TRICOLORE — composant signature
+   LOGO — The Sov Company
    ───────────────────────────────────────────── */
-function Liseret({ height = 4 }) {
+function SovIcon({ size = 32, color }) {
   return (
-    <div style={{ display: "flex", height }}>
-      <div style={{ flex: 1, background: T.bleu }} />
-      <div style={{ flex: 1, background: T.blanc, borderTop: `1px solid ${T.grisLine}`, borderBottom: `1px solid ${T.grisLine}` }} />
-      <div style={{ flex: 1, background: T.rouge }} />
-    </div>
+    <svg viewBox="0 0 1133.9 1133.9" width={size} height={size} style={{ display: "block" }}>
+      <path fill={color} d="M560.9,114.4c-636.2-9-636.2,937,0,927.9,632.6,9.6,632.6-937.6,0-927.9ZM250.8,403.7c20.7,287.4,508.1,167.5,508.1,368.4,8.6,168.7-335.5,149-443.2,63.6-113.4-95.9-142.2-301.3-64.9-432ZM875.3,740c-26.9-276.6-507.6-160.9-507.6-360.4-9.4-156.2,292.8-162.3,414.8-76.6,125,88.9,166.8,297.3,92.9,437Z"/>
+    </svg>
   );
 }
 
-/* ─────────────────────────────────────────────
-   LOGO
-   ───────────────────────────────────────────── */
 function Logo({ light = false }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-      {/* Cocarde */}
-      <div style={{ position: "relative", width: 36, height: 36 }}>
-        <div style={{
-          position: "absolute", inset: 0, borderRadius: "50%",
-          background: T.rouge,
-        }} />
-        <div style={{
-          position: "absolute", inset: 4, borderRadius: "50%",
-          background: T.blanc,
-        }} />
-        <div style={{
-          position: "absolute", inset: 10, borderRadius: "50%",
-          background: T.bleu,
-        }} />
-      </div>
+      <SovIcon size={32} color={light ? T.blanc : T.ardoise} />
       <div>
         <div style={{
           fontSize: 20,
-          fontFamily: "'Marianne', 'Helvetica Neue', Helvetica, sans-serif",
+          fontFamily: "'Inter', 'Helvetica Neue', Helvetica, sans-serif",
           fontWeight: 700,
-          color: light ? T.blanc : T.bleu,
+          color: light ? T.blanc : T.ardoise,
           letterSpacing: "0.04em",
           lineHeight: 1,
         }}>
@@ -72,7 +53,7 @@ function Logo({ light = false }) {
         </div>
         <div style={{
           fontSize: 10,
-          fontFamily: "'Marianne', 'Helvetica Neue', Helvetica, sans-serif",
+          fontFamily: "'Inter', 'Helvetica Neue', Helvetica, sans-serif",
           fontWeight: 400,
           color: light ? "rgba(255,255,255,0.6)" : T.gris,
           letterSpacing: "0.08em",
@@ -84,7 +65,7 @@ function Logo({ light = false }) {
         </div>
         <div style={{
           fontSize: 8,
-          fontFamily: "'Marianne', 'Helvetica Neue', Helvetica, sans-serif",
+          fontFamily: "'Inter', 'Helvetica Neue', Helvetica, sans-serif",
           color: light ? "rgba(255,255,255,0.4)" : T.grisClair,
           letterSpacing: "0.06em",
           lineHeight: 1,
@@ -238,14 +219,14 @@ function HeroForm({ onStart }) {
         onClick={submit}
         style={{
           width: "100%", padding: "14px 0",
-          background: T.rouge, color: T.blanc,
+          background: T.bleu, color: T.blanc,
           border: "none", borderRadius: 6,
           fontSize: 15, fontWeight: 700,
           letterSpacing: "0.02em",
           transition: "background 0.2s",
         }}
-        onMouseOver={e => { e.currentTarget.style.background = "#C41D2B"; }}
-        onMouseOut={e => { e.currentTarget.style.background = T.rouge; }}
+        onMouseOver={e => { e.currentTarget.style.background = T.bleuMid; }}
+        onMouseOut={e => { e.currentTarget.style.background = T.bleu; }}
       >
         Démarrer le diagnostic →
       </button>
@@ -283,9 +264,9 @@ const BENCHMARKS = {
 };
 
 const REGLEMENTAIRE = {
-  sante:        { badge: "NIS2 + HDS",       color: T.rouge,    text: "Votre secteur est soumis à NIS2 (entités essentielles) et à l'obligation d'hébergement certifié HDS pour toute donnée de santé. La PGSSI-S impose des exigences strictes de disponibilité et traçabilité." },
+  sante:        { badge: "NIS2 + HDS",       color: T.bleu,     text: "Votre secteur est soumis à NIS2 (entités essentielles) et à l'obligation d'hébergement certifié HDS pour toute donnée de santé. La PGSSI-S impose des exigences strictes de disponibilité et traçabilité." },
   finance:      { badge: "DORA",             color: T.bleu,     text: "Le règlement DORA s'applique à votre secteur depuis janvier 2025. Il impose des tests de résilience opérationnelle numérique, une gestion contractuelle stricte des prestataires IT critiques et des plans de continuité formalisés." },
-  industrie:    { badge: "NIS2 + LPM",       color: T.rouge,    text: "Les Opérateurs d'Importance Vitale (OIV) et de Services Essentiels (OSE) sont soumis à la LPM et à NIS2. La séparation physique IT/OT est une exigence critique pour vos systèmes industriels." },
+  industrie:    { badge: "NIS2 + LPM",       color: T.bleu,     text: "Les Opérateurs d'Importance Vitale (OIV) et de Services Essentiels (OSE) sont soumis à la LPM et à NIS2. La séparation physique IT/OT est une exigence critique pour vos systèmes industriels." },
   collectivite: { badge: "NIS2",             color: T.bleu,     text: "Les collectivités entrent progressivement dans le scope NIS2. L'ANSSI accompagne via des programmes dédiés (MonServiceSécurisé, DIAG EN CYBER). La désignation d'un référent cyber est recommandée." },
   bitd:         { badge: "IGI 1300 / LPM",   color: T.ardoise,  text: "Les acteurs de la BITD sont soumis aux instructions interministérielles de classification (IGI 1300, MC 0900). La qualification ANSSI est souvent requise contractuellement pour les marchés défense." },
   autre:        { badge: "NIS2",             color: T.bleu,     text: "La directive NIS2, transposée en droit français, élargit considérablement le périmètre des entités régulées. Vérifiez votre éligibilité : les sanctions peuvent atteindre 10 M€ ou 2 % du CA mondial." },
@@ -683,13 +664,13 @@ function Radar({j,o,s,mj,mo,ms}) {
     <svg viewBox={`0 0 ${sz} ${sz}`} style={{width:"100%",maxWidth:200,display:"block",margin:"0 auto"}}>
       {gridLevels.map((l,i)=>(
         <polygon key={i} points={poly(axes.map(a=>pt(a,r*l)))}
-          fill="none" stroke={i===2?"rgba(0,35,149,0.15)":"rgba(0,35,149,0.07)"} strokeWidth={i===2?1.5:1}/>
+          fill="none" stroke={i===2?"rgba(37,99,235,0.15)":"rgba(37,99,235,0.07)"} strokeWidth={i===2?1.5:1}/>
       ))}
       {axes.map((a,i)=>{
         const end=pt(a,r);
-        return <line key={i} x1={cx} y1={cy} x2={end.x} y2={end.y} stroke="rgba(0,35,149,0.15)" strokeWidth={1}/>;
+        return <line key={i} x1={cx} y1={cy} x2={end.x} y2={end.y} stroke="rgba(37,99,235,0.15)" strokeWidth={1}/>;
       })}
-      <polygon points={poly(dataPts)} fill="rgba(0,35,149,0.12)" stroke={T.bleu} strokeWidth={2} strokeLinejoin="round"/>
+      <polygon points={poly(dataPts)} fill="rgba(37,99,235,0.12)" stroke={T.bleu} strokeWidth={2} strokeLinejoin="round"/>
       {dataPts.map((p,i)=>(
         <circle key={i} cx={p.x} cy={p.y} r={5} fill={T.bleu} stroke={T.blanc} strokeWidth={2}/>
       ))}
@@ -697,7 +678,7 @@ function Radar({j,o,s,mj,mo,ms}) {
         const lp=pt(a,r+22);
         return (
           <text key={i} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="middle"
-            fontSize="10" fill={T.ardoise} fontFamily="'Marianne','Helvetica Neue',sans-serif" fontWeight="600">
+            fontSize="10" fill={T.ardoise} fontFamily="'Inter','Helvetica Neue',sans-serif" fontWeight="600">
             {a.label}
           </text>
         );
@@ -716,24 +697,9 @@ function Landing({onStart}) {
     {n:"43j",  t:"durée moyenne d'interruption après une attaque ransomware"},
   ];
   return (
-    <div style={{minHeight:"100vh",background:T.blanc,fontFamily:"'Marianne','Helvetica Neue',Helvetica,sans-serif"}}>
+    <div style={{minHeight:"100vh",background:T.blanc,fontFamily:"'Inter','Helvetica Neue',Helvetica,sans-serif"}}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap');
-        @font-face {
-          font-family: 'Marianne';
-          src: url('https://www.systeme-de-design.gouv.fr/fonts/Marianne-Bold.woff2') format('woff2');
-          font-weight: 700; font-style: normal;
-        }
-        @font-face {
-          font-family: 'Marianne';
-          src: url('https://www.systeme-de-design.gouv.fr/fonts/Marianne-Regular.woff2') format('woff2');
-          font-weight: 400; font-style: normal;
-        }
-        @font-face {
-          font-family: 'Marianne';
-          src: url('https://www.systeme-de-design.gouv.fr/fonts/Marianne-Medium.woff2') format('woff2');
-          font-weight: 500; font-style: normal;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap');
         * { box-sizing: border-box; margin:0; padding:0; }
         button { cursor:pointer; font-family:inherit; }
         @keyframes fadeUp {
@@ -747,15 +713,12 @@ function Landing({onStart}) {
         @media print { nav,button { display:none!important; } }
       `}</style>
 
-      {/* Liseret en haut */}
-      <Liseret height={5} />
-
       {/* NAV */}
       <nav className="nav-main" style={{
         padding:"0 48px", height:64,
         display:"flex",alignItems:"center",justifyContent:"space-between",
         borderBottom:`1px solid ${T.grisLine}`,
-        position:"sticky",top:5,background:"rgba(255,255,255,0.97)",
+        position:"sticky",top:0,background:"rgba(255,255,255,0.97)",
         backdropFilter:"blur(8px)", zIndex:100,
       }}>
         <Logo />
@@ -769,7 +732,7 @@ function Landing({onStart}) {
             Stratégie SGDSN 2026–2030
           </div>
           <a href="/contact" style={{
-            fontFamily:"'Marianne','Helvetica Neue',Helvetica,sans-serif",
+            fontFamily:"'Inter','Helvetica Neue',Helvetica,sans-serif",
             fontSize:13, fontWeight:600, color:T.blanc, textDecoration:"none",
             padding:"8px 20px", background:T.bleu, borderRadius:4,
             letterSpacing:"0.02em",
@@ -803,7 +766,7 @@ function Landing({onStart}) {
               marginBottom: 24,
             }}>
               Votre entreprise ignore l'étendue de son exposition{" "}
-              <span style={{ color: T.rouge }}>numérique.</span>
+              <span style={{ color: T.bleu }}>numérique.</span>
             </h1>
 
             <p className="fade-up-3" style={{
@@ -909,7 +872,7 @@ function Landing({onStart}) {
           ].map((p,i)=>(
             <div key={i} style={{
               background:T.blanc,padding:"36px 28px",
-              borderTop:`4px solid ${i===0?T.bleu:i===1?T.ardoise:T.rouge}`,
+              borderTop:`4px solid ${i===0?T.bleu:i===1?T.ardoise:T.bleuLight}`,
             }}>
               <div style={{fontSize:32,marginBottom:16}}>{p.icon}</div>
               <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.1em",color:T.bleu,textTransform:"uppercase",marginBottom:10}}>
@@ -1043,8 +1006,7 @@ function Identification({onComplete, initialData}) {
   const lbl={display:"block",fontSize:11,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:T.gris,marginBottom:6};
 
   return (
-    <div style={{minHeight:"100vh",background:T.grisbg,fontFamily:"'Marianne','Helvetica Neue',Helvetica,sans-serif"}}>
-      <Liseret height={5}/>
+    <div style={{minHeight:"100vh",background:T.grisbg,fontFamily:"'Inter','Helvetica Neue',Helvetica,sans-serif"}}>
       <nav className="nav-main" style={{
         padding:"0 48px",height:64,display:"flex",alignItems:"center",
         justifyContent:"space-between",borderBottom:`1px solid ${T.grisLine}`,
@@ -1219,18 +1181,17 @@ function Diagnostic({profile,onComplete}) {
     "Infrastructure & Cloud":T.bleu,
     "Identité & Accès":"#7C3AED",
     "Bureautique & IA":"#BE185D",
-    "Sécurité & Détection":T.rouge,
+    "Sécurité & Détection":"#DC2626",
     "Gouvernance & Conformité":"#047857",
   };
   const mc=moduleColors[q.module]||T.bleu;
 
   return (
-    <div style={{minHeight:"100vh",background:T.grisbg,fontFamily:"'Marianne','Helvetica Neue',Helvetica,sans-serif"}}>
-      <Liseret height={5}/>
+    <div style={{minHeight:"100vh",background:T.grisbg,fontFamily:"'Inter','Helvetica Neue',Helvetica,sans-serif"}}>
       {/* NAV */}
       <div style={{
         background:T.blanc,borderBottom:`1px solid ${T.grisLine}`,
-        position:"sticky",top:5,zIndex:100,
+        position:"sticky",top:0,zIndex:100,
       }}>
         <div className="nav-main" style={{
           padding:"0 48px",height:56,
@@ -1384,7 +1345,7 @@ function Diagnostic({profile,onComplete}) {
 /* ─────────────────────────────────────────────
    SCREEN 4 — RAPPORT (contemporain)
    ───────────────────────────────────────────── */
-function Rapport({profile,answers,questions}) {
+function Rapport({profile,answers,questions,diagnosticId}) {
   const sc=computeScores(answers,questions);
   const mat=getMaturity(sc.total,sc.max);
   const bench=BENCHMARKS[profile.secteur]||23;
@@ -1393,6 +1354,21 @@ function Rapport({profile,answers,questions}) {
   const regl=REGLEMENTAIRE[profile.secteur]||REGLEMENTAIRE.autre;
   const offres=OFFRES[mat.key]||OFFRES.expose;
   const [sent,setSent]=useState(false);
+  const [sending,setSending]=useState(false);
+
+  const handleAccompagnement=async(o)=>{
+    setSending(true);
+    try{
+      const {error}=await supabase.functions.invoke("send-email",{body:{diagnostic_id:diagnosticId,email_type:"accompagnement",offre_tag:o.tag,offre_titre:o.titre}});
+      if(error) throw error;
+      setSent(true);
+    }catch(e){
+      console.error("Erreur envoi accompagnement:",e);
+      setSent(true);
+    }finally{
+      setSending(false);
+    }
+  };
 
   const risks=questions
     .map(q=>{const a=answers[q.id];const opt=q.options[a??0];return{q,sc:opt?.score??0,max:Math.max(...q.options.map(o=>o.score))};})
@@ -1401,10 +1377,10 @@ function Rapport({profile,answers,questions}) {
     .slice(0,3);
 
   const matScale=[
-    {key:"expose",    label:"Exposé",     range:"0–25 %",  color:T.rouge,   bg:"#FEF2F2", from:0,    to:0.25},
-    {key:"vulnerable",label:"Vulnérable", range:"25–50 %", color:"#C2410C", bg:"#FFF7ED", from:0.25, to:0.50},
-    {key:"resiliant", label:"Résilient",  range:"50–75 %", color:"#B45309", bg:"#FFFBEB", from:0.50, to:0.75},
-    {key:"souverain", label:"Souverain",  range:"75–100 %",color:"#15803D", bg:"#F0FDF4", from:0.75, to:1.00},
+    {key:"expose",    label:"Exposé",     range:"0–25 %",  color:"#EF4444", bg:"#FEF2F2", from:0,    to:0.25},
+    {key:"vulnerable",label:"Vulnérable", range:"25–50 %", color:"#F97316", bg:"#FFF7ED", from:0.25, to:0.50},
+    {key:"resiliant", label:"Résilient",  range:"50–75 %", color:"#22C55E", bg:"#F0FDF4", from:0.50, to:0.75},
+    {key:"souverain", label:"Souverain",  range:"75–100 %",color:"#16A34A", bg:"#ECFDF5", from:0.75, to:1.00},
   ];
   const currentIdx=matScale.findIndex(l=>l.key===mat.key);
 
@@ -1426,18 +1402,18 @@ function Rapport({profile,answers,questions}) {
   const synthText = synthTexts[mat.key] || synthTexts.expose;
 
   const timeline=[
-    {delay:"Sem. 1", color:T.rouge,   titre:"Cartographier vos données sensibles",
+    {delay:"Sem. 1", color:"#EF4444", titre:"Cartographier vos données sensibles",
       desc:"Inventaire des actifs numériques, désignation des responsables, classification par niveau de criticité. Socle de tout plan de souveraineté."},
-    {delay:"Mois 1", color:"#C2410C", titre:"Identifier vos obligations réglementaires",
+    {delay:"Mois 1", color:"#F97316", titre:"Identifier vos obligations réglementaires",
       desc:"Confirmer si votre entité est dans le scope NIS2 / DORA, identifier les échéances légales et désigner un référent conformité."},
-    {delay:"Mois 3", color:"#B45309", titre:"Auditer votre chaîne IT & fournisseurs",
+    {delay:"Mois 3", color:"#22C55E", titre:"Auditer votre chaîne IT & fournisseurs",
       desc:"Évaluer chaque fournisseur critique sur ses pratiques de sécurité, sa juridiction et les clauses contractuelles manquantes."},
-    {delay:"Mois 6", color:"#15803D", titre:"Déployer les premières mesures souveraines",
+    {delay:"Mois 6", color:"#16A34A", titre:"Déployer les premières mesures souveraines",
       desc:"Remplacer les solutions les plus exposées, généraliser le MFA, mettre en place des sauvegardes hors ligne testées régulièrement."},
   ];
 
   return (
-    <div style={{minHeight:"100vh",background:T.grisbg,fontFamily:"'Marianne','Helvetica Neue',Helvetica,sans-serif"}}>
+    <div style={{minHeight:"100vh",background:T.grisbg,fontFamily:"'Inter','Helvetica Neue',Helvetica,sans-serif"}}>
       <style>{`
         @media print {
           nav,button,.no-print{display:none!important;}
@@ -1449,7 +1425,6 @@ function Rapport({profile,answers,questions}) {
           .rghero{grid-template-columns:1fr!important;}
         }
       `}</style>
-      <Liseret height={5}/>
 
       {/* NAV */}
       <nav className="nav-main" style={{padding:"0 48px",height:56,display:"flex",alignItems:"center",justifyContent:"space-between",background:T.blanc,borderBottom:`1px solid ${T.grisLine}`}}>
@@ -1461,7 +1436,7 @@ function Rapport({profile,answers,questions}) {
 
       {/* ══ SECTION 1 : SCORE + ÉCHELLE DE MATURITÉ ══ */}
       <div style={{background:T.blanc,borderBottom:`1px solid ${T.grisLine}`,position:"relative"}}>
-        <div style={{position:"absolute",left:0,top:0,bottom:0,width:4,background:T.rouge}}/>
+        <div style={{position:"absolute",left:0,top:0,bottom:0,width:4,background:T.bleu}}/>
         <div className="rapport-inner" style={{maxWidth:1060,margin:"0 auto",padding:"40px 52px"}}>
           <div style={{fontSize:12,color:T.gris,letterSpacing:"0.08em",marginBottom:28,fontWeight:500}}>
             {profile.prenom} {profile.nom} · {profile.poste} · {profile.entreprise}
@@ -1525,15 +1500,27 @@ function Rapport({profile,answers,questions}) {
               </div>
             </div>
           </div>
-          {/* Synthèse */}
+          {/* Synthèse + CTA */}
           <div style={{
             marginTop:32,paddingTop:24,
             borderTop:`1px solid ${T.grisLine}`,
             background:T.blanc,
+            display:"flex",alignItems:"center",justifyContent:"space-between",gap:32,flexWrap:"wrap",
           }}>
-            <p style={{fontSize:14,color:T.ardoise,lineHeight:1.75,margin:0,maxWidth:760}}>
+            <p style={{fontSize:14,color:T.ardoise,lineHeight:1.75,margin:0,flex:1,minWidth:280}}>
               {synthText}
             </p>
+            <a href="/contact" style={{
+              display:"inline-flex",alignItems:"center",gap:8,
+              background:T.bleu,color:T.blanc,
+              padding:"12px 28px",borderRadius:6,
+              fontSize:14,fontWeight:700,letterSpacing:"0.02em",
+              textDecoration:"none",whiteSpace:"nowrap",
+              transition:"background 0.2s",flexShrink:0,
+            }}
+              onMouseOver={e=>e.currentTarget.style.background=T.bleuMid}
+              onMouseOut={e=>e.currentTarget.style.background=T.bleu}
+            >Parler à un expert →</a>
           </div>
         </div>
       </div>
@@ -1607,14 +1594,14 @@ function Rapport({profile,answers,questions}) {
                 <div style={{fontSize:10,fontWeight:700,letterSpacing:"0.12em",color:T.gris,textTransform:"uppercase",marginBottom:20}}>Accompagnement recommandé</div>
                 <div style={{display:"flex",flexDirection:"column",gap:14}}>
                   {offres.map((o,i)=>(
-                    <div key={i} style={{background:T.grisbg,border:`1px solid ${T.grisLine}`,padding:"18px 20px",borderLeft:`3px solid ${i===0?T.ardoise:T.rouge}`}}>
-                      <div style={{fontSize:10,fontWeight:700,letterSpacing:"0.1em",color:i===0?T.ardoise:T.rouge,textTransform:"uppercase",marginBottom:6}}>{o.tag}</div>
+                    <div key={i} style={{background:T.grisbg,border:`1px solid ${T.grisLine}`,padding:"18px 20px",borderLeft:`3px solid ${i===0?T.ardoise:T.bleu}`}}>
+                      <div style={{fontSize:10,fontWeight:700,letterSpacing:"0.1em",color:i===0?T.ardoise:T.bleu,textTransform:"uppercase",marginBottom:6}}>{o.tag}</div>
                       <div style={{fontSize:14,fontWeight:700,color:T.ardoise,marginBottom:6,lineHeight:1.3}}>{o.titre}</div>
                       <div style={{fontSize:12,color:T.gris,marginBottom:14,lineHeight:1.6,fontFamily:"inherit"}}>{o.desc}</div>
-                      <button onClick={()=>setSent(true)} style={{width:"100%",background:i===0?T.ardoise:T.rouge,color:T.blanc,border:"none",padding:"10px",fontSize:12,fontWeight:700,letterSpacing:"0.04em",cursor:"pointer",transition:"opacity 0.2s"}}
-                        onMouseOver={e=>e.currentTarget.style.opacity="0.85"}
-                        onMouseOut={e=>e.currentTarget.style.opacity="1"}
-                      >{o.cta} →</button>
+                      <button onClick={()=>handleAccompagnement(o)} disabled={sending} style={{width:"100%",background:i===0?T.ardoise:T.bleu,color:T.blanc,border:"none",padding:"10px",fontSize:12,fontWeight:700,letterSpacing:"0.04em",cursor:sending?"wait":"pointer",opacity:sending?0.6:1,transition:"opacity 0.2s"}}
+                        onMouseOver={e=>{if(!sending)e.currentTarget.style.opacity="0.85"}}
+                        onMouseOut={e=>{if(!sending)e.currentTarget.style.opacity="1"}}
+                      >{sending?"Envoi en cours…":o.cta+" →"}</button>
                     </div>
                   ))}
                 </div>
@@ -1696,11 +1683,10 @@ function Contact() {
     document.body.appendChild(s);
   }, []);
 
-  const F = "'Marianne', 'Helvetica Neue', Helvetica, sans-serif";
+  const F = "'Inter', 'Helvetica Neue', Helvetica, sans-serif";
 
   return (
     <div style={{ minHeight: "100vh", background: T.grisbg }}>
-      <Liseret />
       {/* Header */}
       <header style={{ background: T.blanc, borderBottom: `1px solid ${T.grisLine}`, padding: "16px 0" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -1753,12 +1739,11 @@ function Contact() {
    ───────────────────────────────────────────── */
 function MentionsLegales() {
   useEffect(() => { document.title = "Mentions légales · SovNum"; }, []);
-  const F = "'Marianne', 'Helvetica Neue', Helvetica, sans-serif";
+  const F = "'Inter', 'Helvetica Neue', Helvetica, sans-serif";
   const S = { h2: { fontFamily: F, fontSize: 18, fontWeight: 700, color: T.ardoise, margin: "32px 0 12px" }, p: { fontFamily: F, fontSize: 14, color: T.gris, lineHeight: 1.7, margin: "0 0 12px" } };
 
   return (
     <div style={{ minHeight: "100vh", background: T.grisbg }}>
-      <Liseret />
       <header style={{ background: T.blanc, borderBottom: `1px solid ${T.grisLine}`, padding: "16px 0" }}>
         <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <a href="/" style={{ textDecoration: "none" }}><Logo /></a>
